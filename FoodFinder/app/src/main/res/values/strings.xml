@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Food Finder</string>
+    <string-array name="sort_type">
+        <item>Sort items from A-Z</item>
+        <item>Sort items from Z-A</item>
+    </string-array>
+</resources>
