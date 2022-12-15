@@ -11,6 +11,7 @@ import com.example.foodfinder.interfaces.RandomRecipesCallInterface;
 import com.example.foodfinder.interfaces.RecipeInstructionsCallInterface;
 import com.example.foodfinder.spoonacularAPI.responseformat.Instructions;
 import com.example.foodfinder.spoonacularAPI.responseformat.RandomRecipes;
+import com.example.foodfinder.spoonacularAPI.responseformat.Recipe;
 
 import java.util.List;
 
@@ -58,6 +59,18 @@ public class RequestHandler {
                 listener.onError(t.getMessage());
             }
         });
+    }
+
+    public List<Recipe> getRandomRecipesSynchronously(int number_of_recipes) {
+        RandomRecipesCallInterface randomRecipesCallClass = retrofit.create(RandomRecipesCallInterface.class);
+        Call<RandomRecipes> randomRecipesCallSync = randomRecipesCallClass.getRandomRecipes(API_KEY, String.valueOf(number_of_recipes));
+
+        try {
+            Response<RandomRecipes> response = randomRecipesCallSync.execute();
+            return  response.body().recipes;
+        } catch (Exception e) {
+            return  null;
+        }
     }
 
     public void getInstructions(InstructionsListener listener, int id){

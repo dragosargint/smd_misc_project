@@ -52,6 +52,8 @@ public class RandomRecipeAdapter  extends  RecyclerView.Adapter<RandomRecipeView
 
     @Override
     public int getItemCount() {
+        if (list == null)
+            return 0;
         return list.size();
     }
 

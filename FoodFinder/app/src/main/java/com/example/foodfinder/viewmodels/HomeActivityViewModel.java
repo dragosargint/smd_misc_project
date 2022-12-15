@@ -18,6 +18,8 @@ import com.example.foodfinder.spoonacularAPI.responseformat.Recipe;
 import com.example.foodfinder.threads.SortingThread;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -38,6 +40,33 @@ public class HomeActivityViewModel extends AndroidViewModel {
     public LiveData<List<Recipe>> getRecipesLiveData() {
         return recipeList;
     }
+
+    public List<Recipe> getRecipesAsList() {
+        return  recipeList.getValue();
+    }
+
+    public  List<Recipe> getRecipesAsListRange(int idxMin, int idxMax) {
+        List<Recipe> list = recipeList.getValue();
+        if (list == null)
+            return  null;
+
+        if (idxMin < 0 || idxMin >= list.size())
+            return  null;
+
+        if (idxMax < 0 || idxMax >= list.size())
+            return null;
+
+        if (idxMin > idxMax)
+            return null;
+
+        List<Recipe> new_list = new ArrayList<Recipe>();
+        for (int idx = idxMin; idx < idxMax; idx++) {
+            new_list.add(list.get(idx));
+        }
+
+        return new_list;
+    }
+
 
     public void getRandomRecipes()
     {
@@ -87,5 +116,6 @@ public class HomeActivityViewModel extends AndroidViewModel {
 
         return null;
     }
+
 
 }

@@ -1,8 +1,9 @@
 package com.example.foodfinder.spoonacularAPI.responseformat;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Recipe{
+public class Recipe implements Serializable {
     public boolean vegetarian;
     public boolean vegan;
     public boolean glutenFree;
