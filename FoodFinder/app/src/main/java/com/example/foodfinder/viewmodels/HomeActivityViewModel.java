@@ -11,6 +11,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.foodfinder.R;
+import com.example.foodfinder.adapters.RandomRecipeAdapter;
 import com.example.foodfinder.interfaces.RandomRecipeListener;
 import com.example.foodfinder.spoonacularAPI.RequestHandler;
 import com.example.foodfinder.spoonacularAPI.responseformat.RandomRecipes;
@@ -27,14 +28,40 @@ public class HomeActivityViewModel extends AndroidViewModel {
 
     private MutableLiveData<List<Recipe>> recipeList;
     private RequestHandler requestHandler;
+    RandomRecipeListener randomRecipeListener;
     Random rand;
-
 
     public HomeActivityViewModel(@NonNull Application application) {
         super(application);
         recipeList = new MutableLiveData<List<Recipe>>();
         requestHandler = RequestHandler.getInstance();
         rand = new Random();
+        randomRecipeListener = new RandomRecipeListener() {
+            @Override
+            public void onResponse(RandomRecipes response, String message) {
+                recipeList.postValue(response.recipes);
+            }
+
+            @Override
+            public void onError(String message) {
+            }
+        };
+    }
+    public HomeActivityViewModel(@NonNull Application application, MutableLiveData<List<Recipe>> recipeList) {
+        super(application);
+        this.recipeList = recipeList;
+        requestHandler = RequestHandler.getInstance();
+        rand = new Random();
+        randomRecipeListener = new RandomRecipeListener() {
+            @Override
+            public void onResponse(RandomRecipes response, String message) {
+                recipeList.postValue(response.recipes);
+            }
+
+            @Override
+            public void onError(String message) {
+            }
+        };
     }
 
     public LiveData<List<Recipe>> getRecipesLiveData() {
@@ -42,7 +69,7 @@ public class HomeActivityViewModel extends AndroidViewModel {
     }
 
     public List<Recipe> getRecipesAsList() {
-        return  recipeList.getValue();
+        return recipeList.getValue();
     }
 
     public  List<Recipe> getRecipesAsListRange(int idxMin, int idxMax) {
@@ -70,16 +97,26 @@ public class HomeActivityViewModel extends AndroidViewModel {
 
     public void getRandomRecipes()
     {
-        requestHandler.getRandomRecipes(new RandomRecipeListener() {
-            @Override
-            public void onResponse(RandomRecipes response, String message) {
-                recipeList.postValue(response.recipes);
-            }
+        requestHandler.getRandomRecipes(randomRecipeListener, DEFAULT_NO_RECIPES);
+    }
 
-            @Override
-            public void onError(String message) {
-            }
-        }, DEFAULT_NO_RECIPES);
+    public void getRandomRecipes(int nrRecipes)
+    {
+        requestHandler.getRandomRecipes(randomRecipeListener, nrRecipes);
+    }
+
+    public void getRandomRecipes(RandomRecipeListener listener, int nrRecipes) {
+        requestHandler.getRandomRecipes(listener, nrRecipes);
+    }
+
+    public  void getRandomRecipesSync() {
+       List<Recipe> list = requestHandler.getRandomRecipesSynchronously(DEFAULT_NO_RECIPES);
+       recipeList.postValue(list);
+    }
+
+    public  void getRandomRecipesSync(int nrRecipes) {
+        List<Recipe> list = requestHandler.getRandomRecipesSynchronously(nrRecipes);
+        recipeList.postValue(list);
     }
 
     public void sort(int sortType) {

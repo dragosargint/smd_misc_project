@@ -1,7 +1,7 @@
 package com.example.foodfinder;
 
 public class Constants {
-    public static final String API_KEY = "4b00e60ebec446bfa4f73df398848655";
+    public static final String API_KEY = "2a09580e3ab74ae2811190f38006518b"; //"4b00e60ebec446bfa4f73df398848655";
     public static final String BASE_URL = "https://api.spoonacular.com/";
     public static final int DEFAULT_NO_RECIPES = 10;
     public static final String RECIPE_ID_KEY = "RECIPE_ID_KEY";

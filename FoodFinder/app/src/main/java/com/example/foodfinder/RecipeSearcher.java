@@ -26,6 +26,10 @@ public class RecipeSearcher {
         this.list.sort(comparator);
     }
 
+    public List<Recipe> getTitleOrderedList() {
+       return list;
+    }
+
     public Recipe normalSearch(String title) {
         for (Recipe recipe : list) {
             if (recipe.title.compareTo(title) == 0)
